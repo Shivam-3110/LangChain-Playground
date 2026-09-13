@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Food AI Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- Header -->
+        <header class="header">
+            <div>
+                <h1>🍽️ Food AI</h1>
+                <p>Your smart food assistant</p>
+            </div>
+
+            <div class="status">
+                <span class="status-dot"></span>
+                Online
+            </div>
+        </header>
+
+
+        <!-- Chat Area -->
+        <main class="chat-container" id="chatContainer">
+
+            <div class="message bot">
+                <div class="avatar">🤖</div>
+
+                <div class="message-content">
+                    <p>
+                        Hello! 👋 I'm your Food AI Assistant.
+                    </p>
+
+                    <p>
+                        You can ask me about today's
+                        <strong>breakfast, lunch, or dinner.</strong>
+                    </p>
+                </div>
+            </div>
+
+        </main>
+
+
+        <!-- Quick Questions -->
+        <div class="quick-actions">
+
+            <button onclick="sendQuickMessage('What is today\\'s breakfast?')">
+                🍳 Breakfast
+            </button>
+
+            <button onclick="sendQuickMessage('What is today\\'s lunch?')">
+                🍛 Lunch
+            </button>
+
+            <button onclick="sendQuickMessage('What is today\\'s dinner?')">
+                🍽️ Dinner
+            </button>
+
+        </div>
+
+
+        <!-- Input Area -->
+        <form class="input-area" id="chatForm">
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Ask about today's menu..."
+                autocomplete="off"
+            >
+
+            <button type="submit" id="sendButton">
+                ➤
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
