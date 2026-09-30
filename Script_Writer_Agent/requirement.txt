@@ -1,0 +1,4 @@
+langrpah
+langhchain
+langhchain google -gen Ai
+.env

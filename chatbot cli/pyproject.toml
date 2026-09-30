@@ -1,0 +1,20 @@
+[project]
+name = "chatbot-cli"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Shivam-3110", email = "mrshivam00022@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "google-genai>=2.25.0",
+    "python-dotenv>=1.2.3",
+]
+
+[project.scripts]
+chatbot-cli = "chatbot_cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.20,<0.13.0"]
+build-backend = "uv_build"
