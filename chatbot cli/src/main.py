@@ -56,7 +56,7 @@ while True:
             )
         )
 
-        assistant_message = json.loads(response.text)
+        assistant_message = response.text
         
 
         history.append({
