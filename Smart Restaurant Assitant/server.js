@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
-
+import connectDB from "./db.js";
+import menuRoutes from "./routes/menuRoutes.js";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { createAgent, DynamicStructuredTool } from "langchain";
 import { z } from "zod";
@@ -12,7 +13,7 @@ const port = 3000;
 const app = express();
 
 app.use(express.json());
-
+app.use("/api/menu", menuRoutes);
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "frontend")));
@@ -29,30 +30,34 @@ const model = new ChatGoogleGenerativeAI({
 
 
 
+import Menu from "./models/Menu.js";
+
 const getMenuTool = new DynamicStructuredTool({
     name: "getMenuTool",
 
     description:
-        "Return today's menu for a given category: breakfast, lunch, or dinner.",
+        "Fetch available restaurant dishes for breakfast, lunch, or dinner from MongoDB.",
 
     schema: z.object({
         category: z
-            .string()
-            .describe("Type of food: breakfast, lunch, or dinner"),
+            .enum(["breakfast", "lunch", "dinner"])
+            .describe("The meal category"),
     }),
 
     func: async ({ category }) => {
+        const menuItems = await Menu.find({
+            category: {
+                $regex: `^${category}$`,
+                $options: "i",
+            },
+            isAvailable: true,
+        }).select("name price ingredients spiceLevel preparationTime");
 
-        const menus = {
-            breakfast: "Aloo paratha, Poha, Masala Chai",
-            lunch: "Paneer Butter Masala, Dal Fry, Jeera Rice, Roti",
-            dinner: "Veg Biryani, Raita, Salad, Gulab Jamun",
-        };
+        if (menuItems.length === 0) {
+            return `No available menu items found for ${category}.`;
+        }
 
-        return (
-            menus[category.toLowerCase()] ||
-            "No menu found for this category"
-        );
+        return JSON.stringify(menuItems);
     },
 });
 
@@ -125,6 +130,7 @@ app.post("/api/chat", async (req, res) => {
     }
 });
 
+connectDB()
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

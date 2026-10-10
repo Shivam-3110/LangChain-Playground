@@ -1,0 +1,93 @@
+SMART RESTAURANT ASSISTANT - PROJECT OVERVIEW
+==============================================
+
+WHAT IT IS
+----------
+A web-based AI chatbot that answers questions about a restaurant's daily menu
+(breakfast, lunch, dinner). Powered by Google Gemini AI via LangChain.
+
+
+HOW IT WORKS
+------------
+1. User opens the chat UI in a browser.
+2. User types a question (e.g. "What's for lunch?") or clicks a quick-action button.
+3. The frontend sends the message to the backend via POST /api/chat.
+4. The backend passes the message to a LangChain AI agent.
+5. The agent decides to call the getMenuTool to fetch the correct menu.
+6. The menu is returned to the agent, which forms a natural language reply.
+7. The reply is sent back to the frontend and displayed in the chat.
+
+
+PROJECT STRUCTURE
+-----------------
+Smart Restaurant Assistant/
+│
+├── server.js              - Express backend + LangChain AI agent logic
+├── package.json           - Node.js dependencies and project config
+├── .env                   - Stores GOOGLE_API_KEY (not committed to git)
+├── .gitignore             - Files excluded from git (e.g. .env, node_modules)
+│
+└── Frontend/
+    ├── index.html         - Chat UI layout (header, chat area, input form)
+    ├── script.js          - Handles sending messages and rendering responses
+    └── style.css          - Styling for the chat interface
+
+
+KEY FILES EXPLAINED
+-------------------
+server.js
+  - Sets up an Express server on port 3000
+  - Serves the frontend as static files
+  - Defines the getMenuTool: a LangChain tool that returns hardcoded menu items
+    for breakfast, lunch, or dinner
+  - Creates a LangChain agent using Google Gemini (gemini-3.5-flash-lite) with
+    the getMenuTool attached
+  - Exposes POST /api/chat endpoint that receives user input and returns AI response
+
+Frontend/index.html
+  - Single-page chat UI
+  - Has quick-action buttons for Breakfast, Lunch, Dinner
+  - Has a text input form for custom questions
+
+Frontend/script.js
+  - Sends user messages to /api/chat via fetch()
+  - Displays user and bot messages in the chat window
+  - Shows a "thinking..." loading indicator while waiting for a response
+  - Sanitizes user input to prevent XSS
+
+Frontend/style.css
+  - Green-themed responsive chat UI
+  - Mobile-friendly layout via media query
+
+
+MENU DATA (hardcoded in server.js)
+-----------------------------------
+Breakfast : Aloo Paratha, Poha, Masala Chai
+Lunch     : Paneer Butter Masala, Dal Fry, Jeera Rice, Roti
+Dinner    : Veg Biryani, Raita, Salad, Gulab Jamun
+
+
+DEPENDENCIES
+------------
+- express              Web server framework
+- dotenv               Loads environment variables from .env
+- langchain            LangChain core (agent + DynamicStructuredTool)
+- @langchain/google-genai  Google Gemini model integration
+- @langchain/core      LangChain base utilities
+- @langchain/community LangChain community tools
+- zod                  Schema validation for tool inputs
+
+
+SETUP & RUN
+-----------
+1. Add your Google API key to .env:
+      GOOGLE_API_KEY=your_key_here
+
+2. Install dependencies:
+      npm install
+
+3. Start the server:
+      node server.js
+
+4. Open browser at:
+      http://localhost:3000
