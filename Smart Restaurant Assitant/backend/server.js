@@ -1,13 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
+import { fileURLToPath } from "url";
 import connectDB from "./db.js";
 import menuRoutes from "./routes/menuRoutes.js";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { createAgent, DynamicStructuredTool } from "langchain";
 import { z } from "zod";
+import Menu from "./models/menuModel.js";
 
-dotenv.config();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 const port = 3000;
 const app = express();
@@ -15,8 +18,8 @@ const app = express();
 app.use(express.json());
 app.use("/api/menu", menuRoutes);
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "frontend")));
+const frontendPath = path.resolve(__dirname, "../frontend");
+app.use(express.static(frontendPath));
 
 
 
@@ -30,7 +33,7 @@ const model = new ChatGoogleGenerativeAI({
 
 
 
-import Menu from "./models/Menu.js";
+
 
 const getMenuTool = new DynamicStructuredTool({
     name: "getMenuTool",
@@ -86,9 +89,7 @@ const agent = createAgent({
 
 
 app.get("/", (req, res) => {
-    res.sendFile(
-        path.join(__dirname, "frontend", "index.html")
-    );
+    res.sendFile(path.join(frontendPath, "index.html"));
 });
 
 

@@ -21,50 +21,54 @@ HOW IT WORKS
 PROJECT STRUCTURE
 -----------------
 Smart Restaurant Assistant/
-│
-├── server.js              - Express backend + LangChain AI agent logic
-├── package.json           - Node.js dependencies and project config
-├── .env                   - Stores GOOGLE_API_KEY (not committed to git)
-├── .gitignore             - Files excluded from git (e.g. .env, node_modules)
-│
-└── Frontend/
-    ├── index.html         - Chat UI layout (header, chat area, input form)
-    ├── script.js          - Handles sending messages and rendering responses
-    └── style.css          - Styling for the chat interface
+├── backend/
+│   ├── server.js          - Express API + LangChain AI agent
+│   ├── db.js              - MongoDB connection
+│   ├── package.json       - Backend dependencies and npm scripts
+│   ├── package-lock.json  - Locked backend dependency versions
+│   ├── .env               - GOOGLE_API_KEY and MONGO_URI (not committed)
+│   ├── node_modules/      - Installed backend dependencies (not committed)
+│   ├── models/
+│   │   └── menuModel.js   - MongoDB menu schema
+│   └── routes/
+│       └── menuRoutes.js  - Menu CRUD API routes
+├── frontend/
+│   ├── index.html         - Chat UI layout
+│   ├── script.js          - Sends chat requests and renders responses
+│   └── style.css          - Chat interface styling
+└── .gitignore             - Excludes .env and node_modules
 
 
 KEY FILES EXPLAINED
 -------------------
-server.js
+backend/server.js
   - Sets up an Express server on port 3000
-  - Serves the frontend as static files
-  - Defines the getMenuTool: a LangChain tool that returns hardcoded menu items
-    for breakfast, lunch, or dinner
+  - Serves static files from the frontend/ directory
+  - Defines getMenuTool, which fetches available menu items from MongoDB
   - Creates a LangChain agent using Google Gemini (gemini-3.5-flash-lite) with
     the getMenuTool attached
   - Exposes POST /api/chat endpoint that receives user input and returns AI response
 
-Frontend/index.html
+frontend/index.html
   - Single-page chat UI
   - Has quick-action buttons for Breakfast, Lunch, Dinner
   - Has a text input form for custom questions
 
-Frontend/script.js
+frontend/script.js
   - Sends user messages to /api/chat via fetch()
   - Displays user and bot messages in the chat window
   - Shows a "thinking..." loading indicator while waiting for a response
   - Sanitizes user input to prevent XSS
 
-Frontend/style.css
+frontend/style.css
   - Green-themed responsive chat UI
   - Mobile-friendly layout via media query
 
 
-MENU DATA (hardcoded in server.js)
------------------------------------
-Breakfast : Aloo Paratha, Poha, Masala Chai
-Lunch     : Paneer Butter Masala, Dal Fry, Jeera Rice, Roti
-Dinner    : Veg Biryani, Raita, Salad, Gulab Jamun
+MENU DATA
+---------
+Menu items are stored in MongoDB using the schema in backend/models/menuModel.js.
+Use the /api/menu endpoints to create and manage menu items.
 
 
 DEPENDENCIES
@@ -83,11 +87,12 @@ SETUP & RUN
 1. Add your Google API key to .env:
       GOOGLE_API_KEY=your_key_here
 
-2. Install dependencies:
+2. Install backend dependencies:
+      cd backend
       npm install
 
 3. Start the server:
-      node server.js
+      npm start
 
 4. Open browser at:
       http://localhost:3000
