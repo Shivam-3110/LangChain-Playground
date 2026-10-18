@@ -82,88 +82,81 @@ const recommendFoodTool = new DynamicStructuredTool({
     schema: z.object({
         category: z
             .enum(["Breakfast", "Lunch", "Dinner"])
-            .nullable()
+            .optional()
             .describe("Meal category, or null if unspecified"),
 
         maxPrice: z
             .number()
             .nonnegative()
-            .nullable()
+            .optional()
             .describe("Maximum price per dish, or null if unspecified"),
 
         isVegetarian: z
             .boolean()
-            .nullable()
+            .optional()
             .describe("Whether the user requires vegetarian food, or null if unspecified"),
 
         spiceLevel: z
             .enum(["Low", "Medium", "High"])
-            .nullable()
+           .optional()
             .describe("Requested spice level, or null if unspecified"),
     }),
 
-    func: async ({
-        category,
-        maxPrice,
-        isVegetarian,
-        spiceLevel,
-    }) => {
-        try {
-            const filter = {
-                isAvailable: true,
-            };
+func: async ({ category, maxPrice, isVegetarian, spiceLevel }) => {
+    try {
+        const filter = {
+            isAvailable: true,
+        };
 
-            if (category !== null) {
-                filter.category = category;
-            }
+        if (category !== undefined) {
+            filter.category = category;
+        }
 
-            if (maxPrice !== null) {
-                filter.price = {
-                    $lte: maxPrice,
-                };
-            }
+        if (maxPrice !== undefined) {
+            filter.price = { $lte: maxPrice };
+        }
 
-            if (isVegetarian !== null) {
-                filter.isVegetarian = isVegetarian;
-            }
+        if (isVegetarian !== undefined) {
+            filter.isVegetarian = isVegetarian;
+        }
 
-            if (spiceLevel !== null) {
-                filter.spiceLevel = spiceLevel;
-            }
+        if (spiceLevel !== undefined) {
+            filter.spiceLevel = spiceLevel;
+        }
 
-            const dishes = await Menu.find(filter)
-                .select(
-                    "name category price isVegetarian spiceLevel ingredients preparationTime"
-                )
-                .sort({ price: 1 })
-                .limit(10)
-                .lean();
+        const dishes = await Menu.find(filter)
+            .select(
+                "name category price isVegetarian spiceLevel ingredients preparationTime"
+            )
+            .sort({ price: 1 })
+            .limit(10)
+            .lean();
 
-            if (dishes.length === 0) {
-                return JSON.stringify({
-                    success: true,
-                    count: 0,
-                    message:
-                        "No available dishes match all the specified preferences. Suggest relaxing one or more filters.",
-                    dishes: [],
-                });
-            }
-
+        if (dishes.length === 0) {
             return JSON.stringify({
                 success: true,
-                count: dishes.length,
-                dishes,
-            });
-        } catch (error) {
-            console.error("Food recommendation error:", error);
-
-            return JSON.stringify({
-                success: false,
-                message: "Unable to retrieve food recommendations right now.",
+                count: 0,
+                message:
+                    "No available dishes match these preferences. Suggest relaxing one or more filters.",
                 dishes: [],
             });
         }
-    },
+
+        return JSON.stringify({
+            success: true,
+            count: dishes.length,
+            dishes,
+        });
+    } catch (error) {
+        console.error("Food recommendation error:", error);
+
+        return JSON.stringify({
+            success: false,
+            message: "Unable to retrieve food recommendations right now.",
+            dishes: [],
+        });
+    }
+},
 });
 
 

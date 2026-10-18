@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Food AI Assistant</title>
-
+    <title>Restaurant AI Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -14,77 +15,117 @@
 
     <div class="app">
 
-        <!-- Header -->
-        <header class="header">
-            <div>
-                <h1>🍽️ Food AI</h1>
-                <p>Your smart food assistant</p>
-            </div>
-
-            <div class="status">
-                <span class="status-dot"></span>
-                Online
-            </div>
-        </header>
-
-
-        <!-- Chat Area -->
-        <main class="chat-container" id="chatContainer">
-
-            <div class="message bot">
-                <div class="avatar">🤖</div>
-
-                <div class="message-content">
-                    <p>
-                        Hello! 👋 I'm your Food AI Assistant.
-                    </p>
-
-                    <p>
-                        You can ask me about today's
-                        <strong>breakfast, lunch, or dinner.</strong>
-                    </p>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.8 6.8 5 7.8 5 9C5 10.5 6.2 11.7 7.7 11.7H16.3C17.8 11.7 19 10.5 19 9C19 7.8 18.2 6.8 17 6.5C16.5 4.5 14.5 3 12 3Z" fill="#3fb950"/>
+                        <rect x="8" y="12" width="8" height="1.5" rx="0.75" fill="#3fb950"/>
+                        <rect x="9" y="14.5" width="6" height="5" rx="1.5" fill="#3fb950"/>
+                        <line x1="11" y1="14.5" x2="11" y2="19.5" stroke="#0d1117" stroke-width="1"/>
+                        <line x1="13" y1="14.5" x2="13" y2="19.5" stroke="#0d1117" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-name">FoodAI</div>
+                    <div class="brand-sub">Smart Assistant</div>
                 </div>
             </div>
 
-        </main>
+            <div class="sidebar-section-label">Quick Menu</div>
 
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="sendQuickMessage('breakfast')">
+                    <span class="quick-icon">🍳</span>
+                    <span>Breakfast</span>
+                </button>
+                <button class="quick-btn" onclick="sendQuickMessage('lunch')">
+                    <span class="quick-icon">🍛</span>
+                    <span>Lunch</span>
+                </button>
+                <button class="quick-btn" onclick="sendQuickMessage('dinner')">
+                    <span class="quick-icon">🌙</span>
+                    <span>Dinner</span>
+                </button>
+            </div>
 
-        <!-- Quick Questions -->
-        <div class="quick-actions">
+            <div class="sidebar-footer">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    Online
+                </div>
+            </div>
+        </aside>
 
-            <button onclick="sendQuickMessage('What is today\\'s breakfast?')">
-                🍳 Breakfast
-            </button>
+        <!-- Main Chat -->
+        <div class="chat-panel">
 
-            <button onclick="sendQuickMessage('What is today\\'s lunch?')">
-                🍛 Lunch
-            </button>
+            <!-- Header -->
+            <header class="chat-header">
+                <div class="chat-header-info">
+                    <div class="assistant-avatar">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.8 6.8 5 7.8 5 9C5 10.5 6.2 11.7 7.7 11.7H16.3C17.8 11.7 19 10.5 19 9C19 7.8 18.2 6.8 17 6.5C16.5 4.5 14.5 3 12 3Z" fill="#3fb950"/>
+                        <rect x="8" y="12" width="8" height="1.5" rx="0.75" fill="#3fb950"/>
+                        <rect x="9" y="14.5" width="6" height="5" rx="1.5" fill="#3fb950"/>
+                        <line x1="11" y1="14.5" x2="11" y2="19.5" stroke="#161b22" stroke-width="1"/>
+                        <line x1="13" y1="14.5" x2="13" y2="19.5" stroke="#161b22" stroke-width="1"/>
+                    </svg>
+                </div>
+                    <div>
+                        <div class="assistant-name">Restaurant Assistant</div>
+                        <div class="assistant-status">
+                            <span class="status-dot"></span>
+                            Always here to help
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-            <button onclick="sendQuickMessage('What is today\\'s dinner?')">
-                🍽️ Dinner
-            </button>
+            <!-- Messages -->
+            <main class="chat-container" id="chatContainer">
+
+                <div class="message bot">
+                    <div class="avatar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3C9.5 3 7.5 4.5 7 6.5C5.8 6.8 5 7.8 5 9C5 10.5 6.2 11.7 7.7 11.7H16.3C17.8 11.7 19 10.5 19 9C19 7.8 18.2 6.8 17 6.5C16.5 4.5 14.5 3 12 3Z" fill="#3fb950"/>
+                            <rect x="8" y="12" width="8" height="1.5" rx="0.75" fill="#3fb950"/>
+                            <rect x="9" y="14.5" width="6" height="5" rx="1.5" fill="#3fb950"/>
+                            <line x1="11" y1="14.5" x2="11" y2="19.5" stroke="#1a3a2a" stroke-width="1"/>
+                            <line x1="13" y1="14.5" x2="13" y2="19.5" stroke="#1a3a2a" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <div class="bubble-wrap">
+                        <div class="message-content">
+                            <p>Hey there! 👋 Welcome to <strong>FoodAI</strong>.</p>
+                            <p>I can tell you what's on today's menu. Try asking about <strong>breakfast</strong>, <strong>lunch</strong>, or <strong>dinner</strong> — or click the quick buttons on the left!</p>
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- Input -->
+            <form class="input-area" id="chatForm">
+                <input
+                    type="text"
+                    id="userInput"
+                    placeholder="Ask about today's menu..."
+                    autocomplete="off"
+                >
+                <button type="submit" id="sendButton" title="Send">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
 
         </div>
 
-
-        <!-- Input Area -->
-        <form class="input-area" id="chatForm">
-
-            <input
-                type="text"
-                id="userInput"
-                placeholder="Ask about today's menu..."
-                autocomplete="off"
-            >
-
-            <button type="submit" id="sendButton">
-                ➤
-            </button>
-
-        </form>
-
     </div>
-
 
     <script src="script.js"></script>
 
